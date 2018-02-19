@@ -15,7 +15,7 @@ app = Flask(__name__)
 def hello():
     return "Home Page For Titanic Survival Prediction"
 
-@app.route('/predicttest', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     try:
         json_request = request.get_json(silent=True)
@@ -26,7 +26,7 @@ def predict():
 
 
         prediction = clf.predict(X = req_df[features])
-        return jsonify(id=1,result=prediction.tolist()[0])
+        return jsonify(model_version=1,result=prediction.tolist()[0])
 
     except Exception:
         return jsonify({'error': 'exception', 'trace': traceback.format_exc()})
