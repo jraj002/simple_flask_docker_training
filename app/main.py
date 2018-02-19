@@ -6,7 +6,7 @@ import traceback
 import pandas as pd
 from sklearn.externals import joblib
 
-clf = joblib.load('test.pkl')
+clf = joblib.load('titanic.pkl')
 features = ["Sex","Pclass","SibSp","Age"]
 
 app = Flask(__name__)
@@ -15,24 +15,8 @@ app = Flask(__name__)
 def hello():
     return "Home Page For Titanic Survival Prediction"
 
-@app.route('/echo', methods=['POST'])
-def echo():
-    if request.method == 'POST':
-        return "Echo: POST"
-
-@app.route('/predict', methods=['POST'])
-def predict():
-    if request.headers['Content-Type'] == 'text/plain':
-        return "Text Message: " + request.data
-
-    elif request.headers['Content-Type'] == 'application/json':
-        return "JSON Message: " + json.dumps(request.json)
-
-    else:
-        return request.headers['Content-Type']
-
 @app.route('/predicttest', methods=['POST'])
-def predicttest():
+def predict():
     try:
         json_request = request.get_json(silent=True)
         print(json_request)
@@ -40,17 +24,9 @@ def predicttest():
         req_df = pd.DataFrame([json_request])
         print(req_df)
 
-        #prediction = list(clf.predict(X = req_df[features]))
-        #return jsonify({'prediction': prediction})
 
         prediction = clf.predict(X = req_df[features])
         return jsonify(id=1,result=prediction.tolist()[0])
-
-        #prediction = clf.predict(X = req_df[features])
-        #print(type(prediction))
-        #lst = [{'id':'id', 'prediction': prediction[0]}]
-        #print(prediction[0])
-        #return jsonify(results=lst)
 
     except Exception:
         return jsonify({'error': 'exception', 'trace': traceback.format_exc()})
