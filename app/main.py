@@ -26,7 +26,7 @@ def predict():
 
 
         prediction = clf.predict(X = req_df[features])
-        return jsonify(model_version=1.0.2,result=prediction.tolist()[0])
+        return jsonify(model_version=103,result=prediction.tolist()[0])
 
     except Exception:
         return jsonify({'error': 'exception', 'trace': traceback.format_exc()})
