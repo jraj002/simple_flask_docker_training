@@ -24,7 +24,7 @@ stage('Push image') {
         /* Push the image with two tags:
          * First, the commit id from github
          * Second, the 'latest' tag. */
-        docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
             app.push("${commit_id}")
             app.push("latest")
         }
