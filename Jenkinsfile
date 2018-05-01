@@ -20,6 +20,16 @@ node {
         }
     }
 
+stage('CLI workaround') {
+/* Workaround to address issue with credentials stored in Jenkins not
+* being passed correctly to the docker registry
+* - ref https://issues.jenkins-ci.org/browse/JENKINS-38018 */
+withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'docker-hub-credentials',
+usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+sh 'docker login -u $USERNAME -p $PASSWORD https://index.docker.io/v1/'
+}
+}
+
 stage('Push image') {
         /* Push the image with two tags:
          * First, the commit id from github
