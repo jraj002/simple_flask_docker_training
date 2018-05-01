@@ -13,14 +13,14 @@ node {
      app = docker.build("jraj/titanic-jenkins")
    }
 
-   stage('Test image') {
+   stage('Test Image') {
     /* Figure out a way to run tests on the image*/
         app.inside {
             sh 'echo "Tests passed"'
         }
     }
 
-stage('CLI workaround') {
+stage('Dockerhub Login') {
 /* Workaround to address issue with credentials stored in Jenkins not
 * being passed correctly to the docker registry
 * - ref https://issues.jenkins-ci.org/browse/JENKINS-38018 */
@@ -30,7 +30,7 @@ sh 'docker login -u $USERNAME -p $PASSWORD https://index.docker.io/v1/'
 }
 }
 
-stage('Push image') {
+stage('Push Image') {
         /* Push the image with two tags:
          * First, the commit id from github
          * Second, the 'latest' tag. */
